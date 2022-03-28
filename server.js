@@ -11,22 +11,10 @@ const PORT = require('./databaseConfig').dado.serverPort;
 
 const addZero = require('./addZero');
 
+const query = require('./querys');
 
 
 
-const querySaveData = "INSERT INTO rastreador_v2 (equipamento_id, latitude, longitude, date_time, velocidade) VALUES ($1, $2, $3, $4, $5)";
-
-const querySaveState = "INSERT INTO rastreador_v2_states (equipamento_id, goffstate, turnoffstate, lowbatterystate) VALUES ($1, $2, $3, $4)";
-
-const queryUpdategOff = "UPDATE rastreador_v2_states SET goffstate = $1 WHERE equipamento_id = $2";
-
-const queryUpdateTurnOff = "UPDATE rastreador_v2_states SET turnoffstate = $1 WHERE equipamento_id = $2";
-
-const queryUpdateTurnOffandGoff = "UPDATE rastreador_v2_states SET turnoffstate = $1, goffstate = $2 WHERE equipamento_id = $3";
-
-const queryUpdateLowBattery = "UPDATE rastreador_v2_states SET lowbatterystate = $1 WHERE equipamento_id = $2";
-
-const queryGetId = "SELECT equipamento_id FROM rastreador_v2_states WHERE equipamento_id = ($1)"
 
 
 ///////start server////////      
@@ -56,15 +44,15 @@ server.on('connection', (socket) => {
 
         if (data.toString().includes("G_OFF")) {
 
-            pool.query(queryGetId, [data.toString().substring(0, 4)])
+            pool.query(query.queryGetId, [data.toString().substring(0, 4)])
                 .then((response) => {
 
                     if (response.rowCount == 0) 
                     {
-                        pool.query(querySaveState, [data.toString().substring(0, 4), 1, 0, 0]);
+                        pool.query(query.querySaveState, [data.toString().substring(0, 4), 1, 0, 0]);
                     }
                     else { 
-                        pool.query(queryUpdategOff, [1, data.toString().substring(0, 4)]);   
+                        pool.query(query.queryUpdategOff, [1, data.toString().substring(0, 4)]);   
                     }
 
                     setTimeout(() => {
@@ -83,15 +71,15 @@ server.on('connection', (socket) => {
         else if (data.toString().includes("TURN_OFF")) {
            
             console.log('..........');
-            pool.query(queryGetId, [data.toString().substring(0, 4)])
+            pool.query(query.queryGetId, [data.toString().substring(0, 4)])
                 .then((response) => {
 
                     if (response.rowCount == 0) 
                     {
-                        pool.query(querySaveState, [data.toString().substring(0, 4), 0, 1, 0]); 
+                        pool.query(query.querySaveState, [data.toString().substring(0, 4), 0, 1, 0]); 
                     }
                     else {
-                        pool.query(queryUpdateTurnOff, [1, data.toString().substring(0, 4)]); 
+                        pool.query(query.queryUpdateTurnOff, [1, data.toString().substring(0, 4)]); 
                     }
 
                 })
@@ -104,15 +92,15 @@ server.on('connection', (socket) => {
 
         else if (data.toString().includes("LOW_BATTERY")) {
            
-            pool.query(queryGetId, [data.toString().substring(0, 4)])
+            pool.query(query.queryGetId, [data.toString().substring(0, 4)])
                 .then((response) => {
 
                     if (response.rowCount == 0) 
                     {
-                        pool.query(querySaveState, [data.toString().substring(0, 4), 0, 0, 1]); 
+                        pool.query(query.querySaveState, [data.toString().substring(0, 4), 0, 0, 1]); 
                     }
                     else { 
-                        pool.query(queryUpdateLowBattery, [1, data.toString().substring(0, 4)]); 
+                        pool.query(query.queryUpdateLowBattery, [1, data.toString().substring(0, 4)]); 
                     }
 
                 })
@@ -151,16 +139,16 @@ server.on('connection', (socket) => {
 
 function setState(data) {
 
-    pool.query(queryGetId, [data.substring(1, 5)])
+    pool.query(query.queryGetId, [data.substring(1, 5)])
 
         .then((response) => {
 
             if (response.rowCount == 0) 
             {
-                pool.query(querySaveState, [data.substring(1, 5), 0, 0, 0]); 
+                pool.query(query.querySaveState, [data.substring(1, 5), 0, 0, 0]); 
             }
             else {
-                pool.query(queryUpdateTurnOffandGoff, [0, 0, data.substring(1, 5)]); 
+                pool.query(query.queryUpdateTurnOffandGoff, [0, 0, data.substring(1, 5)]); 
             }
 
         })
@@ -186,7 +174,7 @@ function saveData(data) {
     var array = `${dados_array[8]}-${dados_array[7]}-${dados_array[6]} ${dados_array[3]}:${dados_array[4]}:${dados_array[5]}`; 
     console.log(array);
 
-    pool.query(querySaveData, [dados_array[0], dados_array[1], dados_array[2], array, dados_array[9]])
+    pool.query(query.querySaveData, [dados_array[0], dados_array[1], dados_array[2], array, dados_array[9]])
 
 }
 
@@ -205,7 +193,7 @@ function saveDataWithOld(data) {
         var array = `${dados_array[8]}-${dados_array[7]}-${dados_array[6]} ${dados_array[3]}:${dados_array[4]}:${dados_array[5]}`; 
 
         if ((dados_array[1] != undefined) && (dados_array[2] != undefined)) {
-            pool.query(querySaveData, [ID, dados_array[1], dados_array[2], array, dados_array[9]]) 
+            pool.query(query.querySaveData, [ID, dados_array[1], dados_array[2], array, dados_array[9]]) 
         }
         else {
             console.log("valores vazios recebidos");
