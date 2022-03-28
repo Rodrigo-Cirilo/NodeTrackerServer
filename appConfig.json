@@ -1,0 +1,8 @@
+{
+    "user": "postgres",
+    "host": "srv-dev",
+    "database": "Rastreador",
+    "password": "geodados",  
+    "port": 5432,
+    "serverPort": 8080
+}
