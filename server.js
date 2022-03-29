@@ -15,8 +15,6 @@ const query = require('./querys');
 
 
 
-
-
 ///////start server////////      
 server.listen(PORT, () => {
     console.log('Server is running');
