@@ -1,8 +1,9 @@
 {
-    "user": "postgres",
-    "host": "srv-dev",
-    "database": "Rastreador",
-    "password": "geodados",  
-    "port": 5432,
+    "user": "U2FsdGVkX18AahVUx3oqqJjR8X+EuheFUvB3eVui7sg=",
+    "host": "U2FsdGVkX18FFQWVDCH8dqRvAgwEeRfu+IfIJlT2ctI=",
+    "database": "U2FsdGVkX1/oqXXm6nHsVNvt+Qtdhbhoe2iPLaZiVqY=",
+    "password": "U2FsdGVkX1/FJpMJyC6unTSiLnm0k/E+/KnzGcEZJkc=",  
+    "port": "U2FsdGVkX1/vokkisUAnOwhPWHAPnh15H+rcsDeGQ2g=",
     "serverPort": 8080
 }
+
