@@ -1,4 +1,6 @@
 
+/* esse é o caminho para teste local serv-dev "U2FsdGVkX18FFQWVDCH8dqRvAgwEeRfu+IfIJlT2ctI=",*/
+
 const net = require('net');
 const server = net.createServer();
 
@@ -27,7 +29,7 @@ server.on('connection', (socket) => {
     console.log('Rastreador conectou');
 
     setTimeout(() => {
-        socket.write("CONECTOU");
+        socket.write("CONNECT OK");
     }, 250); 
 
     socket.on('close', () => {
@@ -40,6 +42,8 @@ server.on('connection', (socket) => {
 
 
     socket.on('data', (data) => {
+     //   console.log("Chegou Dados");
+        console.log(data.toString());
 
         if (data.toString().includes("G_OFF")) {
 
@@ -56,7 +60,8 @@ server.on('connection', (socket) => {
 
                     setTimeout(() => {
                         socket.write("RE1"); 
-                    }, 30);
+                      //  console.log("Respondi RE1");
+                    }, 100);
 
                 })
                 .catch((err) => {
@@ -69,7 +74,7 @@ server.on('connection', (socket) => {
         }
         else if (data.toString().includes("TURN_OFF")) {
            
-            console.log('..........');
+            console.log('turn off');
             pool.query(query.queryGetId, [data.toString().substring(0, 4)])
                 .then((response) => {
 
@@ -116,6 +121,7 @@ server.on('connection', (socket) => {
 
             setTimeout(() => {
                 socket.write("RS1");
+              //  console.log("Respondi RS1 - A");
             }, 100);
             saveData(data.toString());  
             setState(data.toString());
@@ -124,7 +130,9 @@ server.on('connection', (socket) => {
         else if (data.toString().substring(0, 1) == 'B') {
             setTimeout(() => {
                 socket.write("RS1"); 
-            }, 100);
+               // console.log("Respondi RS1 - B");
+           }, 100);
+          
             saveDataWithOld(data.toString());
             setState(data.toString()); 
 
@@ -164,12 +172,14 @@ function saveData(data) {
     let dados = data;
     let dados_array = dados.split("/");
     dados_array[7] = addZero(dados_array[7]); //mes
-    dados_array[6] = addZero(dados_array[6]); //dia
-    dados_array[5] = addZero(dados_array[5]); //hora
+    dados_array[6] = addZero(dados_array[6]); //dia    
+    dados_array[3] = parseInt(dados_array[3]); //
+    dados_array[3] = dados_array[3] - 3;
+    dados_array[3] = addZero(dados_array[3]); //hora
     dados_array[4] = addZero(dados_array[4]); //min
-    dados_array[3] = addZero(dados_array[3]); //seg
+    dados_array[5] = addZero(dados_array[5]); //seg
     dados_array[0] = dados_array[0].substring(1, 5)  //retira o A do ID do equipamento
-
+    
     var array = `${dados_array[8]}-${dados_array[7]}-${dados_array[6]} ${dados_array[3]}:${dados_array[4]}:${dados_array[5]}`; 
     console.log(array);
 
@@ -185,12 +195,15 @@ function saveDataWithOld(data) {
         let dados_array = valor.split("/");
         dados_array[7] = addZero(dados_array[7]); //mes
         dados_array[6] = addZero(dados_array[6]); //dia
-        dados_array[5] = addZero(dados_array[5]); //hora
+        dados_array[3] = parseInt(dados_array[3]); //
+        dados_array[3] = dados_array[3] - 3;
+        dados_array[3] = addZero(dados_array[3]); //hora
+      
         dados_array[4] = addZero(dados_array[4]); //min
-        dados_array[3] = addZero(dados_array[3]); //seg   
+        dados_array[5] = addZero(dados_array[5]); //seg   
 
         var array = `${dados_array[8]}-${dados_array[7]}-${dados_array[6]} ${dados_array[3]}:${dados_array[4]}:${dados_array[5]}`; 
-
+        console.log(array);
         if ((dados_array[1] != undefined) && (dados_array[2] != undefined)) {
             pool.query(query.querySaveData, [ID, dados_array[1], dados_array[2], array, dados_array[9]]) 
         }

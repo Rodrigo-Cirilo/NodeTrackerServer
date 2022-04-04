@@ -1,9 +1,10 @@
 {
     "user": "U2FsdGVkX18AahVUx3oqqJjR8X+EuheFUvB3eVui7sg=",
-    "host": "U2FsdGVkX18FFQWVDCH8dqRvAgwEeRfu+IfIJlT2ctI=",
+    "host":  "U2FsdGVkX19wfXwYYacjhnz63HIAcM9syl6S5433YLQ=" , 
     "database": "U2FsdGVkX1/oqXXm6nHsVNvt+Qtdhbhoe2iPLaZiVqY=",
     "password": "U2FsdGVkX1/FJpMJyC6unTSiLnm0k/E+/KnzGcEZJkc=",  
-    "port": "U2FsdGVkX1/vokkisUAnOwhPWHAPnh15H+rcsDeGQ2g=",
-    "serverPort": 8080
+    "port": "U2FsdGVkX18XKnj2tVnqcLq/PBT8KLKPFPGA/5v3PDo=",
+          
+    "serverPort": 15130
 }
 

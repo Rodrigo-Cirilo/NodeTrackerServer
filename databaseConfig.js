@@ -12,7 +12,7 @@ const fs = require('fs');
  dado.port = parseInt(cryptojs.AES.decrypt(dado.port, 'chave secreta: G30d@d0$').toString(cryptojs.enc.Utf8));
  
 
- console.log(dado);
+ //console.log(dado);
 
 const pool = new Pool(dado);
 
